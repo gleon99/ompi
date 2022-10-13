@@ -54,18 +54,30 @@
 int mca_spml_base_test(void* addr, int cmp, void* value, int datatype, int *out_value)
 {
     volatile int *int_addr;
+    volatile unsigned int *uint_addr;
     volatile long *long_addr;
+    volatile unsigned long *ulong_addr;
     volatile short *short_addr;
+    volatile unsigned short *ushort_addr;
     volatile long long *longlong_addr;
+    volatile unsigned long long *ulonglong_addr;
     volatile int32_t *int32_addr;
+    volatile uint32_t *uint32_addr;
     volatile int64_t *int64_addr;
+    volatile uint64_t *uint64_addr;
 
     int int_value;
+    unsigned int uint_value;
     long long_value;
+    unsigned long ulong_value;
     short short_value;
+    unsigned short ushort_value;
     long long longlong_value;
+    unsigned long long ulonglong_value;
     int32_t int32_value;
+    uint32_t uint32_value;
     int64_t int64_value;
+    uint64_t uint64_value;
 
     ompi_fortran_integer_t *fint_addr, fint_value;
     ompi_fortran_integer4_t *fint4_addr, fint4_value;
@@ -80,11 +92,25 @@ int mca_spml_base_test(void* addr, int cmp, void* value, int datatype, int *out_
         SPML_BASE_DO_CMP((*out_value), int_addr, cmp, int_value);
         break;
 
+        /* Unsigned Int */
+    case SHMEM_UINT:
+        uint_value = *(unsigned int*) value;
+        uint_addr = (unsigned int*) addr;
+        SPML_BASE_DO_CMP((*out_value), uint_addr, cmp, uint_value);
+        break;
+
         /* Short */
     case SHMEM_SHORT:
         short_value = *(short*) value;
         short_addr = (short*) addr;
         SPML_BASE_DO_CMP((*out_value), short_addr, cmp, short_value);
+        break;
+
+        /* Unsigned Short */
+    case SHMEM_USHORT:
+        ushort_value = *(unsigned short*) value;
+        ushort_addr = (unsigned short*) addr;
+        SPML_BASE_DO_CMP((*out_value), ushort_addr, cmp, ushort_value);
         break;
 
         /* Long */
@@ -94,11 +120,25 @@ int mca_spml_base_test(void* addr, int cmp, void* value, int datatype, int *out_
         SPML_BASE_DO_CMP((*out_value), long_addr, cmp, long_value);
         break;
 
+        /* Unsigned Long */
+    case SHMEM_ULONG:
+        ulong_value = *(unsigned long*) value;
+        ulong_addr = (unsigned long*) addr;
+        SPML_BASE_DO_CMP((*out_value), ulong_addr, cmp, ulong_value);
+        break;
+
         /* Long-Long */
     case SHMEM_LLONG:
         longlong_value = *(long long*) value;
         longlong_addr = (long long*) addr;
         SPML_BASE_DO_CMP((*out_value), longlong_addr, cmp, longlong_value);
+        break;
+
+        /* Unsigned Long-Long */
+    case SHMEM_ULLONG:
+        ulonglong_value = *(unsigned long long*) value;
+        ulonglong_addr = (unsigned long long*) addr;
+        SPML_BASE_DO_CMP((*out_value), ulonglong_addr, cmp, ulonglong_value);
         break;
 
        /* Int32_t */
@@ -107,12 +147,26 @@ int mca_spml_base_test(void* addr, int cmp, void* value, int datatype, int *out_
         int32_addr = (int32_t*) addr;
         SPML_BASE_DO_CMP((*out_value), int32_addr, cmp, int32_value);
         break;
-
+        
+        /* Uint32_t */
+    case SHMEM_UINT32_T:
+        uint32_value = *(uint32_t*) value;
+        uint32_addr = (uint32_t*) addr;
+        SPML_BASE_DO_CMP((*out_value), uint32_addr, cmp, uint32_value);
+        break;
+        
        /* Int64_t */
     case SHMEM_INT64_T:
         int64_value = *(int64_t*) value;
         int64_addr = (int64_t*) addr;
         SPML_BASE_DO_CMP((*out_value), int64_addr, cmp, int64_value);
+        break;
+
+        /* Uint64_t */
+    case SHMEM_UINT64_T:
+        uint64_value = *(uint64_t*) value;
+        uint64_addr = (uint64_t*) addr;
+        SPML_BASE_DO_CMP((*out_value), uint64_addr, cmp, uint64_value);
         break;
 
         /*C equivalent of Fortran integer type */
@@ -143,18 +197,30 @@ int mca_spml_base_test(void* addr, int cmp, void* value, int datatype, int *out_
 int mca_spml_base_wait(void* addr, int cmp, void* value, int datatype)
 {
     volatile int *int_addr;
+    volatile unsigned int *uint_addr;
     volatile long *long_addr;
+    volatile unsigned long *ulong_addr;
     volatile short *short_addr;
+    volatile unsigned short *ushort_addr;
     volatile long long *longlong_addr;
+    volatile unsigned long long *ulonglong_addr;
     volatile int32_t *int32_addr;
+    volatile uint32_t *uint32_addr;
     volatile int64_t *int64_addr;
+    volatile uint64_t *uint64_addr;
 
     int int_value;
+    unsigned int uint_value;
     long long_value;
+    unsigned long ulong_value;
     short short_value;
+    unsigned short ushort_value;
     long long longlong_value;
+    unsigned long long ulonglong_value;
     int32_t int32_value;
+    uint32_t uint32_value;
     int64_t int64_value;
+    uint64_t uint64_value;
 
     ompi_fortran_integer_t *fint_addr, fint_value;
     ompi_fortran_integer4_t *fint4_addr, fint4_value;
@@ -171,11 +237,25 @@ int mca_spml_base_wait(void* addr, int cmp, void* value, int datatype)
         SPML_BASE_DO_WAIT(res, int_addr, cmp, int_value);
         break;
 
+        /* Unsigned Int */
+    case SHMEM_UINT:
+        uint_value = *(unsigned int*) value;
+        uint_addr = (unsigned int*) addr;
+        SPML_BASE_DO_WAIT(res, uint_addr, cmp, uint_value);
+        break;
+
         /* Short */
     case SHMEM_SHORT:
         short_value = *(short*) value;
         short_addr = (short*) addr;
         SPML_BASE_DO_WAIT(res, short_addr, cmp, short_value);
+        break;
+
+        /* Unsigned Short */
+    case SHMEM_USHORT:
+        ushort_value = *(unsigned short*) value;
+        ushort_addr = (unsigned short*) addr;
+        SPML_BASE_DO_WAIT(res, ushort_addr, cmp, ushort_value);
         break;
 
         /* Long */
@@ -185,11 +265,25 @@ int mca_spml_base_wait(void* addr, int cmp, void* value, int datatype)
         SPML_BASE_DO_WAIT(res, long_addr, cmp, long_value);
         break;
 
+         /* Unsigned Long */
+    case SHMEM_ULONG:
+        ulong_value = *(unsigned long*) value;
+        ulong_addr = (unsigned long*) addr;
+        SPML_BASE_DO_WAIT(res, ulong_addr, cmp, ulong_value);
+        break;
+
         /* Long-Long */
     case SHMEM_LLONG:
         longlong_value = *(long long*) value;
         longlong_addr = (long long*) addr;
         SPML_BASE_DO_WAIT(res, longlong_addr, cmp, longlong_value);
+        break;
+
+        /* Unsigned Long-Long */
+    case SHMEM_ULLONG:
+        ulonglong_value = *(unsigned long long*) value;
+        ulonglong_addr = (unsigned long long*) addr;
+        SPML_BASE_DO_WAIT(res, ulonglong_addr, cmp, ulonglong_value);
         break;
 
        /* Int32_t */
@@ -199,11 +293,25 @@ int mca_spml_base_wait(void* addr, int cmp, void* value, int datatype)
         SPML_BASE_DO_WAIT(res, int32_addr, cmp, int32_value);
         break;
 
+        /* Unsigned Int32_t */
+    case SHMEM_UINT32_T:
+        uint32_value = *(uint32_t*) value;
+        uint32_addr = (uint32_t*) addr;
+        SPML_BASE_DO_WAIT(res, uint32_addr, cmp, uint32_value);
+        break;
+
        /* Int64_t */
     case SHMEM_INT64_T:
         int64_value = *(int64_t*) value;
         int64_addr = (int64_t*) addr;
         SPML_BASE_DO_WAIT(res, int64_addr, cmp, int64_value);
+        break;
+
+        /* Unsigned Int64_t */
+    case SHMEM_UINT64_T:
+        uint64_value = *(uint64_t*) value;
+        uint64_addr = (uint64_t*) addr;
+        SPML_BASE_DO_WAIT(res, uint64_addr, cmp, uint64_value);
         break;
 
         /*C equivalent of Fortran integer type */
