@@ -54,6 +54,7 @@ EXTRA_DIST += \
         examples/oshmem_max_reduction.c \
         examples/oshmem_strided_puts.c \
         examples/oshmem_symmetric_data.c \
+        examples/oshmem_wait_until_all.c \
         examples/Hello.java \
         examples/Ring.java \
         examples/spc_example.c \

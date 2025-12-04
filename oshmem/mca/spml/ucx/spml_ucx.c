@@ -1659,11 +1659,101 @@ int mca_spml_ucx_put_signal_nb(shmem_ctx_t ctx, void* dst_addr, size_t size,
     return OSHMEM_ERR_NOT_IMPLEMENTED;
 }
 
-/* This routine is not implemented */
+/* Helper function to get the size of a datatype */
+static inline size_t get_datatype_size(int datatype)
+{
+    switch (datatype) {
+        case SHMEM_CHAR:
+        case SHMEM_UCHAR:
+        case SHMEM_SCHAR:
+        case SHMEM_INT8_T:
+        case SHMEM_UINT8_T:
+        case SHMEM_BYTE:
+            return 1;
+        case SHMEM_SHORT:
+        case SHMEM_USHORT:
+        case SHMEM_INT16_T:
+        case SHMEM_UINT16_T:
+            return 2;
+        case SHMEM_INT:
+        case SHMEM_UINT:
+        case SHMEM_INT32_T:
+        case SHMEM_UINT32_T:
+        case SHMEM_FLOAT:
+        case SHMEM_FINT4:
+            return 4;
+        case SHMEM_LONG:
+        case SHMEM_ULONG:
+        case SHMEM_LLONG:
+        case SHMEM_ULLONG:
+        case SHMEM_INT64_T:
+        case SHMEM_UINT64_T:
+        case SHMEM_DOUBLE:
+        case SHMEM_SIZE_T:
+        case SHMEM_PTRDIFF_T:
+        case SHMEM_FINT8:
+            return 8;
+        case SHMEM_LDOUBLE:
+            return sizeof(long double);
+        case SHMEM_COMPLEXF:
+            return 8;
+        case SHMEM_COMPLEXD:
+            return 16;
+        case SHMEM_FINT:
+            return sizeof(ompi_fortran_integer_t);
+        default:
+            return 0;
+    }
+}
+
 void mca_spml_ucx_wait_until_all(void *ivars, int cmp, void
         *cmp_value, size_t nelems, const int *status, int datatype)
 {
-    RUNTIME_SHMEM_NOT_IMPLEMENTED_API_ABORT();
+    size_t i;
+    char *current_addr;
+    size_t elem_size;
+    size_t wait_count = 0;
+
+    /* If nelems is 0, return immediately */
+    if (nelems == 0) {
+        return;
+    }
+
+    /* Get the size of each element based on datatype */
+    elem_size = get_datatype_size(datatype);
+    if (elem_size == 0) {
+        return;
+    }
+
+    /* Count how many elements are in the wait set */
+    if (status != NULL) {
+        for (i = 0; i < nelems; i++) {
+            if (status[i] == 0) {
+                wait_count++;
+            }
+        }
+        /* If all elements are excluded (status nonzero), return immediately */
+        if (wait_count == 0) {
+            return;
+        }
+    } else {
+        wait_count = nelems;
+    }
+
+    /* Wait on each element in the wait set until all satisfy the condition */
+    current_addr = (char *)ivars;
+    for (i = 0; i < nelems; i++) {
+        /* Skip this element if it's excluded by status mask */
+        if (status != NULL && status[i] != 0) {
+            current_addr += elem_size;
+            continue;
+        }
+
+        /* Wait for this element to satisfy the condition */
+        mca_spml_base_wait((void *)current_addr, cmp, cmp_value, datatype);
+        
+        current_addr += elem_size;
+    }
 }
 
 /* This routine is not implemented */
